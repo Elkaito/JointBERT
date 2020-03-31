@@ -27,7 +27,7 @@ O O O O B-movie_type I-movie_type B-spatial_relation I-spatial_relation I-spatia
 O O O O O B-object_select B-object_type B-rating_value B-rating_unit
 O O O O O O B-object_type B-object_name I-object_name
 O O B-object_type I-object_type O B-object_name I-object_name
-O O B-music_item O B-playlist I-playlist
+O O B-restaurant_type O O B-served_dish B-spatial_relation I-spatial_relation I-spatial_relation O B-state
 O O O O O O O O O B-city O O O O B-country
 O B-object_select B-object_type O B-rating_value
 O O O O B-spatial_relation I-spatial_relation O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi
