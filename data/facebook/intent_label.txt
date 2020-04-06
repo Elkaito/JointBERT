@@ -1,0 +1,13 @@
+UNK
+weather/find
+weather/checkSunset
+weather/checkSunrise
+reminder/set_reminder
+reminder/cancel_reminder
+reminder/show_reminder
+alarm/set_alarm
+alarm/cancel_alarm
+alarm/show_alarm
+alarm/modify_alarm
+alarm/snooze_alarm
+alarm/time_left_on_alarm
