@@ -1,13 +1,12 @@
 import torch
 import torch.nn as nn
-from transformers import BertPreTrainedModel, BertModel, DistilBertModel, RobertaModel, AlbertModel, DistilBertPreTrainedModel
+from transformers import BertPreTrainedModel, BertModel, DistilBertModel, AlbertModel, DistilBertPreTrainedModel
 from torchcrf import CRF
 
 
 PRETRAINED_MODEL_MAP = {
     'bert': BertModel,
     'distilbert': DistilBertModel,
-    'roberta': RobertaModel,
     'albert': AlbertModel
 }
 
@@ -40,15 +39,16 @@ class JointBERT(BertPreTrainedModel):
         self.args = args
         self.num_intent_labels = len(intent_label_lst)
         self.num_slot_labels = len(slot_label_lst)
-        self.bert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path, config=bert_config)  # Load pretrained bert
+        if args.do_pred:
+            self.bert = PRETRAINED_MODEL_MAP[args.model_type](config=bert_config)
+        else:
+            self.bert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path, config=bert_config)  # Load pretrained bert
 
         self.intent_classifier = IntentClassifier(bert_config.hidden_size, self.num_intent_labels, args.dropout_rate)
         self.slot_classifier = SlotClassifier(bert_config.hidden_size, self.num_slot_labels, args.dropout_rate)
 
         if args.use_crf:
             self.crf = CRF(num_tags=self.num_slot_labels, batch_first=True)
-
-        self.slot_pad_token_idx = slot_label_lst.index(args.slot_pad_label)
 
     def forward(self, input_ids, attention_mask, token_type_ids, intent_label_ids, slot_labels_ids):
         outputs = self.bert(input_ids, attention_mask=attention_mask,
@@ -73,12 +73,7 @@ class JointBERT(BertPreTrainedModel):
         # 2. Slot Softmax
         if slot_labels_ids is not None:
             if self.args.use_crf:
-                # Make new slot_labels_ids, changing ignore_index(-100) to PAD index in slot label
-                # In torchcrf, if index is lower than 0, it makes error when indexing the list
-                padded_slot_labels_ids = slot_labels_ids.detach().clone()
-                padded_slot_labels_ids[padded_slot_labels_ids == self.args.ignore_index] = self.slot_pad_token_idx
-
-                slot_loss = self.crf(slot_logits, padded_slot_labels_ids, mask=attention_mask.byte(), reduction='mean')
+                slot_loss = self.crf(slot_logits, slot_labels_ids, mask=attention_mask.byte(), reduction='mean')
                 slot_loss = -1 * slot_loss  # negative log-likelihood
             else:
                 slot_loss_fct = nn.CrossEntropyLoss(ignore_index=self.args.ignore_index)
@@ -105,16 +100,17 @@ class JointDistilBERT(DistilBertPreTrainedModel):
         self.args = args
         self.num_intent_labels = len(intent_label_lst)
         self.num_slot_labels = len(slot_label_lst)
-        self.distilbert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path,
-                                                                                config=distilbert_config)  # Load pretrained bert
+        if args.do_pred:
+            self.distilbert = PRETRAINED_MODEL_MAP[args.model_type](config=distilbert_config)
+        else:
+            self.distilbert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path,
+                                                                                    config=distilbert_config)  # Load pretrained bert
 
         self.intent_classifier = IntentClassifier(distilbert_config.hidden_size, self.num_intent_labels, args.dropout_rate)
         self.slot_classifier = SlotClassifier(distilbert_config.hidden_size, self.num_slot_labels, args.dropout_rate)
 
         if args.use_crf:
             self.crf = CRF(num_tags=self.num_slot_labels, batch_first=True)
-
-        self.slot_pad_token_idx = slot_label_lst.index(args.slot_pad_label)
 
     def forward(self, input_ids, attention_mask, intent_label_ids, slot_labels_ids):
         outputs = self.distilbert(input_ids, attention_mask=attention_mask)  # last-layer hidden-state, (hidden_states), (attentions)
@@ -138,12 +134,7 @@ class JointDistilBERT(DistilBertPreTrainedModel):
         # 2. Slot Softmax
         if slot_labels_ids is not None:
             if self.args.use_crf:
-                # Make new slot_labels_ids, changing ignore_index(-100) to PAD index in slot label
-                # In torchcrf, if index is lower than 0, it makes error when indexing the list
-                padded_slot_labels_ids = slot_labels_ids.detach().clone()
-                padded_slot_labels_ids[padded_slot_labels_ids == self.args.ignore_index] = self.slot_pad_token_idx
-
-                slot_loss = self.crf(slot_logits, padded_slot_labels_ids, mask=attention_mask.byte(), reduction='mean')
+                slot_loss = self.crf(slot_logits, slot_labels_ids, mask=attention_mask.byte(), reduction='mean')
                 slot_loss = -1 * slot_loss  # negative log-likelihood
             else:
                 slot_loss_fct = nn.CrossEntropyLoss(ignore_index=self.args.ignore_index)

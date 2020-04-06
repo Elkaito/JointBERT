@@ -2,23 +2,16 @@ import argparse
 
 from trainer import Trainer
 from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP
-from data_loader import load_examples
+from data_loader import load_and_cache_examples
 
 
 def main(args):
     init_logger()
     tokenizer = load_tokenizer(args)
 
-    train_dataset = None
-    dev_dataset = None
-    test_dataset = None
-
-    if args.do_train:
-        train_dataset = load_examples(args, tokenizer, mode="train")
-        dev_dataset = load_examples(args, tokenizer, mode="dev")
-
-    if args.do_eval:
-        test_dataset = load_examples(args, tokenizer, mode="test")
+    train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+    dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+    test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
 
     trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
 
@@ -65,10 +58,9 @@ if __name__ == '__main__':
 
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true", help="Whether to run eval on the test set.")
-    parser.add_argument("--no_lower_case", action="store_true", help="Whether not to lowercase the text (For cased model)")
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
 
-    parser.add_argument("--ignore_index", default=-100, type=int,
+    parser.add_argument("--ignore_index", default=0, type=int,
                         help='Specifies a target value that is ignored and does not contribute to the input gradient')
 
     parser.add_argument('--slot_loss_coef', type=float, default=1.0, help='Coefficient for the slot loss.')
