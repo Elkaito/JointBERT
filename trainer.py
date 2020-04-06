@@ -95,6 +95,7 @@ class Trainer(object):
                     scheduler.step()  # Update learning rate schedule
                     self.model.zero_grad()
                     global_step += 1
+                    self.save_model()
 
                     if self.args.logging_steps > 0 and global_step % self.args.logging_steps == 0:
                         self.evaluate("dev")
