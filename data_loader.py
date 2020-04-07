@@ -238,8 +238,6 @@ def load_and_cache_examples(args, tokenizer, mode):
     pad_token_label_id = args.ignore_index
     features = convert_examples_to_features(examples, args.max_seq_len, tokenizer,
                                             pad_token_label_id=pad_token_label_id)
-    logger.info("Saving features into cached file %s", cached_features_file)
-    torch.save(features, cached_features_file)
 
     # Convert to Tensors and build dataset
     all_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
