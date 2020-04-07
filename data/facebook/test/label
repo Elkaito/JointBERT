@@ -698,7 +698,6 @@ reminder/set_reminder
 alarm/set_alarm
 alarm/set_alarm
 alarm/set_alarm
-alarm/set_alarm
 reminder/cancel_reminder
 alarm/set_alarm
 reminder/set_reminder
@@ -823,7 +822,6 @@ alarm/set_alarm
 reminder/set_reminder
 reminder/set_reminder
 reminder/set_reminder
-alarm/show_alarms
 reminder/set_reminder
 reminder/set_reminder
 alarm/cancel_alarm
@@ -3271,7 +3269,6 @@ weather/find
 weather/find
 weather/find
 reminder/cancel_reminder
-alarm/modify_alarm
 alarm/snooze_alarm
 reminder/set_reminder
 weather/find
@@ -3623,7 +3620,6 @@ weather/find
 weather/find
 weather/find
 reminder/show_reminders
-reminder/set_reminder
 alarm/set_alarm
 alarm/set_alarm
 weather/find
@@ -3673,7 +3669,6 @@ weather/find
 reminder/set_reminder
 alarm/set_alarm
 alarm/set_alarm
-reminder/set_reminder
 alarm/show_alarms
 alarm/show_alarms
 alarm/set_alarm
@@ -4337,7 +4332,6 @@ alarm/cancel_alarm
 reminder/set_reminder
 weather/find
 alarm/snooze_alarm
-alarm/modify_alarm
 weather/find
 alarm/set_alarm
 alarm/cancel_alarm
@@ -5029,7 +5023,6 @@ reminder/show_reminders
 alarm/set_alarm
 alarm/show_alarms
 weather/find
-reminder/set_reminder
 weather/find
 alarm/set_alarm
 reminder/set_reminder
@@ -5680,7 +5673,6 @@ alarm/time_left_on_alarm
 reminder/set_reminder
 reminder/set_reminder
 reminder/set_reminder
-reminder/set_reminder
 weather/find
 alarm/show_alarms
 weather/find
@@ -6037,7 +6029,6 @@ alarm/cancel_alarm
 alarm/cancel_alarm
 weather/find
 weather/find
-reminder/cancel_reminder
 alarm/time_left_on_alarm
 weather/find
 weather/find
@@ -6131,7 +6122,6 @@ reminder/set_reminder
 weather/find
 reminder/cancel_reminder
 reminder/cancel_reminder
-reminder/set_reminder
 reminder/set_reminder
 reminder/cancel_reminder
 weather/find
@@ -7802,7 +7792,6 @@ weather/find
 reminder/set_reminder
 weather/find
 alarm/set_alarm
-alarm/set_alarm
 alarm/snooze_alarm
 reminder/set_reminder
 alarm/set_alarm
@@ -8618,4 +8607,15 @@ alarm/show_alarms
 alarm/show_alarms
 alarm/cancel_alarm
 alarm/set_alarm
+alarm/set_alarm
+alarm/set_alarm
+alarm/show_alarms
+alarm/modify_alarm
+reminder/set_reminder
+reminder/set_reminder
+alarm/modify_alarm
+reminder/set_reminder
+reminder/set_reminder
+reminder/cancel_reminder
+reminder/set_reminder
 alarm/set_alarm

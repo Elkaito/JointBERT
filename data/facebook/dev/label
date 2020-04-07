@@ -198,7 +198,6 @@ reminder/cancel_reminder
 alarm/cancel_alarm
 alarm/set_alarm
 reminder/set_reminder
-reminder/set_reminder
 alarm/set_alarm
 alarm/set_alarm
 alarm/set_alarm
@@ -2745,7 +2744,6 @@ reminder/set_reminder
 weather/find
 weather/find
 alarm/show_alarms
-reminder/set_reminder
 weather/find
 weather/find
 weather/find
@@ -3710,7 +3708,6 @@ weather/find
 weather/find
 weather/find
 weather/find
-alarm/set_alarm
 weather/find
 alarm/set_alarm
 alarm/set_alarm
@@ -4179,3 +4176,6 @@ alarm/set_alarm
 alarm/snooze_alarm
 alarm/set_alarm
 alarm/time_left_on_alarm
+reminder/set_reminder
+reminder/set_reminder
+alarm/set_alarm
