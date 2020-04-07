@@ -697,6 +697,7 @@ please help remind me to go grocery shopping tonight
 remind me that i have a tutoring session today at 5pm
 set an alarm for my son to catch the school bus
 set an alarm for every day at 6
+set alarm for 9 am called "	alarm/set_alarm	NoLabel" wake up aaliyah "	alarm/set_alarm	NoLabel"
 set a recurring alarm for 6 : 30 am
 cancel reminder to email john and reschedule for tomorrow , same time
 i need an alarm every hour until midnight
@@ -822,6 +823,7 @@ i need an alarm for seven on weekdays
 remind me to to go pick up a gift for the party
 set a reminder for homework at 10 pm from monday to wednesday
 remind me to delete previews on facebook this afternoon
+what time is my "	alarm/show_alarms	NoLabel" wake up "	alarm/show_alarms	NoLabel" alarm set for tomorrow
 remind me to call the vet at 7 : 30 am tomorrow
 remind me to remind myself about the dentist appointment
 cancel my alarm for friday morning
@@ -3269,6 +3271,7 @@ what is weather for friday ?
 what is the temperature going to be in new hampshire tomorrow ?
 how many sunny days in the next 10 days ?
 delete all my reminders for today .
+rename alarm to "	alarm/modify_alarm	NoLabel" do homework "	alarm/modify_alarm	NoLabel"
 alarm on snooze
 remind me to get the grocery list before leaving work
 how many inches of rain are we getting during the weekend ?
@@ -3620,6 +3623,7 @@ what is the temperature like in austria
 will it rain next week ?
 what is the weather like this week
 see all my reminders
+set reminder on august 30th "	reminder/set_reminder	NoLabel" springsteen on broadway "	reminder/set_reminder	NoLabel"
 set alarm for 2 p.m central standard time
 set a new alarm for a work project today at 5pm
 what is the temperature for mesa today ?
@@ -3669,6 +3673,7 @@ any rain in the forecast this week
 please remind me to call my mom tomorrow
 set alarm for 50 minutes
 set the alarm to go off in 30 minutes .
+add a "	reminder/set_reminder	NoLabel" doctor visit "	reminder/set_reminder	NoLabel" reminder for monday at 2pm
 display alarm for tomorrow
 show me my alarms
 set alarm every minute for 10 minutes .
@@ -4332,6 +4337,7 @@ turn the alarm off
 remind me to deposit my check into my savings account
 is it snowing right now ?
 snooze that alarm please
+change alarm to Okt 30
 what's the low temperature for tomorrow ?
 set alarm for every sunday morning at 7 am
 cancel my alarm for 8 am on tuesday .
@@ -5023,6 +5029,7 @@ show my reminder for this morning
 set alarm for 1 hour .
 show all active alarms , please .
 what will the low be tonight ?
+set monthly reminder on 19th of every month "	reminder/set_reminder	NoLabel" pay bills "	reminder/set_reminder	NoLabel"
 is it supposed to rain today
 set alarm every 5 minutes
 set a reminder to go grocery shopping tomorrow
@@ -5671,6 +5678,7 @@ set alarm for 10 am tomorrow
 how cold is it outside ?
 how much time is left on my alarm ?
 remind me to take my birth control at 11am
+add a reminder to watch "	reminder/set_reminder	I-reminder/todo" power "	reminder/set_reminder	I-reminder/todo"
 remind me to check the bank at 3pm
 reminder to buy bread at grocery store at 6 pm
 how likely is it to rain tonight ?
@@ -6029,6 +6037,7 @@ cancel all alarms today
 delete all alarm
 do i need my gloves ?
 is it cold out
+remove "	reminder/cancel_reminder	NoLabel" pay the mortgage "	reminder/cancel_reminder	NoLabel" from my reminders .
 how long until my next alarm ?
 what is the forecast for the next 10 days in harford ?
 how many inches of rain are expected
@@ -6122,6 +6131,7 @@ remind me of payment due on the car
 what is daytona's uv index ?
 finished my reminder please delete
 delete reminder .
+set a reminder called "	reminder/set_reminder	NoLabel" pick up kids "	reminder/set_reminder	NoLabel" for 5 tonight
 remind me to check the mail .
 remove reminder on wipes
 should i bring a jacket with me today
@@ -7791,6 +7801,7 @@ what is the temperature in nashville , tn ?
 when is the blizzard warning in effect until ?
 set reminder for doctors appointment friday
 are the roads icy today
+set a repeating alarm for Jun 30 monday to friday
 set all alarms to 4am
 snooze alarm for 15 minutes
 please add a reminder to visit stacy at 5pm tonight
@@ -8608,14 +8619,3 @@ what are my alarms for the rest of the day ?
 cancel all alarms for thursday
 set alarm weekly for 7am
 set alarm for 6am every day
-set alarm for 9 am called "wake up Aaliyah"
-What time is my "wake up" alarm set for tomorrow
-Rename alarm to "do homework"
-Set reminder on August 30th "Springsteen on Broadway"
-add a "doctor visit" reminder for Monday at 2pm
-change alarm to 10.30
-Set monthly reminder on 19th of every month "Pay bills"
-add a reminder to watch "Power"
-Remove "Pay the mortgage" from my reminders .
-set a reminder called "pick up kids" for 5 tonight
-Set a repeating alarm for 6.30 monday to friday

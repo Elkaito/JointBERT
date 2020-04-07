@@ -30518,4 +30518,4 @@ set alarm for 8 : 30am
 set alarm for noon tomorrow .
 set the alarm to ring at 4.30am on monday
 how much time is left before my alarm goes off
-set the alarm for tonight .  
+set the alarm for tonight .
