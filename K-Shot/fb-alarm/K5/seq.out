@@ -1,0 +1,15 @@
+O O O O O O B-datetime
+O O B-datetime I-datetime O O
+O O O O O O
+O O B-datetime I-datetime O B-location I-location
+O O O B-weather/attribute I-weather/attribute
+O O B-datetime I-datetime
+O O O O O O O B-location B-datetime
+O O O O O O
+O O O O O O B-datetime
+O O O B-weather/attribute I-weather/attribute
+O O O O B-weather/attribute B-datetime O
+O O O O O B-weather/attribute B-datetime O
+B-weather/noun O B-location O
+O O O O B-weather/attribute B-datetime O
+O O O B-weather/attribute B-datetime O
