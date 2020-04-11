@@ -1,0 +1,14 @@
+PAD
+UNK
+O
+B-datetime
+B-location
+B-negation
+B-news/type
+B-weather/attribute
+B-weather/noun
+B-weather/temperatureUnit
+I-datetime
+I-location
+I-weather/attribute
+I-weather/noun

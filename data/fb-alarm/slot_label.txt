@@ -1,0 +1,12 @@
+PAD
+UNK
+O
+B-alarm/alarm_modifier
+B-datetime
+B-demonstrative_reference
+B-negation
+B-timer/attributes
+B-timer/noun
+I-alarm/alarm_modifier
+I-datetime
+I-demonstrative_reference

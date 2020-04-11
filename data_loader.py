@@ -119,7 +119,10 @@ class JointProcessor(object):
 processors = {
     "atis": JointProcessor,
     "snips": JointProcessor,
-    "facebook": JointProcessor
+    "facebook": JointProcessor,
+    "fb-alarm": JointProcessor,
+    "fb-reminder": JointProcessor,
+    "fb-weather": JointProcessor
 }
 
 
