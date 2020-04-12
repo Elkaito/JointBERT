@@ -1,6 +1,5 @@
 """Dictionary that stores the count for each intent appearing in a dataset"""
 
-
 atisCountDict = {
     'atis_flight': 3308,
     'atis_airfare': 385,
@@ -54,4 +53,13 @@ fbWeatherCountDict = {
     'weather/find': 3953,
     'weather/checkSunset': 55,
     'weather/checkSunrise': 35
+}
+
+"""Maps task to respective dictionaries"""
+taskToDict = {
+    'atis': atisCountDict,
+    'snips': snipsCountDict,
+    'fb-alarm': fbAlarmCountDict,
+    'fb-reminder': fbReminderCountDict,
+    'fb-weather': fbWeatherCountDict
 }
