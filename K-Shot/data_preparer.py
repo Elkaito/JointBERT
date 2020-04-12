@@ -61,7 +61,40 @@ def get_n_percent_from(task, n):
     outfile_in.close()
     outfile_out.close()
 
+def get_k_samples_from(task, k):
+    # create data frames
+    df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'])
+    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task), names=['seq.in'])
+    df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'])
+    # concatenate all dfs horizontally
+    df = pd.concat([df_label,df_in,df_out],axis=1)
+    # shuffle rows of df
+    df = shuffle(df)
+    directory = "{}/K{}".format(task, k)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    # declare outputfiles
+    outfile_label = open('{}/K{}/label'.format(task, k), 'w')
+    outfile_in = open('{}/K{}/seq.in'.format(task, k), 'w')
+    outfile_out = open('{}/K{}/seq.out'.format(task, k), 'w')
+
+    # get unique intent_labels from whatever task
+    intent_labels = get_intent_labels(task)
+    # get countDictionary
+    count_dict = taskToDict[task]
 
 
+    for intent_label in intent_labels:
+        # num_examples = int(np.ceil(count_dict[intent_label] * k))
+        print(intent_label)
+        num_examples = k
+        is_label = df['label']==intent_label
+        data_points = df[is_label].values[0:num_examples]
+        write_to_file(outfile_label, outfile_in, outfile_out, data_points)
 
-get_n_percent_from('atis',2)
+    outfile_label.close()
+    outfile_in.close()
+    outfile_out.close()
+
+get_k_samples_from('fb-reminder',10)
