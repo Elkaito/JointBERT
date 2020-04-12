@@ -110,10 +110,10 @@ class Trainer(object):
                 train_iterator.close()
                 break
 
-            self.save_model()
         return global_step, tr_loss / global_step
 
     def evaluate(self, mode):
+        # We use test dataset because semeval doesn't have dev dataset
         if mode == 'test':
             dataset = self.test_dataset
         elif mode == 'dev':
@@ -220,7 +220,7 @@ class Trainer(object):
         logger.info("Saving model checkpoint to %s", output_dir)
 
     def load_model(self):
-        # Check whether model exists
+        # Cheload_modelck whether model exists
         if not os.path.exists(self.args.model_dir):
             raise Exception("Model doesn't exists! Train first!")
 
@@ -308,7 +308,14 @@ class Trainer(object):
 
         return input_ids_batch, attention_mask_batch, token_type_ids_batch, slot_label_mask_batch
 
-    def predict(self, texts, tokenizer):
+    def predict(self, orig_texts, tokenizer):
+        texts = []
+        if not self.args.no_lower_case:
+            for cased_text in orig_texts:
+                texts.append(cased_text.lower())
+        else:
+            texts = orig_texts
+
         batch = self._convert_texts_to_tensors(texts, tokenizer)
 
         slot_label_mask = batch[3]
@@ -351,7 +358,7 @@ class Trainer(object):
 
         # Make output.txt with texts, intent_list and slot_preds_list
         with open(os.path.join(self.args.pred_dir, self.args.pred_output_file), 'w', encoding='utf-8') as f:
-            for text, intent, slots in zip(texts, intent_list, slot_preds_list):
+            for text, intent, slots in zip(orig_texts, intent_list, slot_preds_list):
                 f.write("text: {}\n".format(text))
                 f.write("intent: {}\n".format(intent))
                 f.write("slots: {}\n".format(' '.join(slots)))
