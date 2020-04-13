@@ -98,4 +98,4 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-get_n_percent_from('fb-alarm', 1)
+get_n_percent_from('fb-reminder', 1)
