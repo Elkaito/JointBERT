@@ -1,6 +1,0 @@
-O B-weather/attribute O O O O O B-datetime O
-O O O O O B-weather/attribute B-datetime O
-O O O O O O B-datetime
-O O B-datetime
-O O O O O O O B-datetime
-O O O O O B-datetime
