@@ -46,7 +46,7 @@ fbAlarmCountDict = {
 fbReminderCountDict = {
     'reminder/set_reminder': 4743,
     'reminder/cancel_reminder': 1151,
-    'reminder/show_reminder': 1006
+    'reminder/show_reminders': 1006
 }
 
 fbWeatherCountDict = {

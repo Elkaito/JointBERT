@@ -1,0 +1,14 @@
+O B-artist I-artist I-artist O B-playlist I-playlist I-playlist
+O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist O
+O O B-restaurant_type O B-party_size_description I-party_size_description I-party_size_description B-spatial_relation I-spatial_relation I-spatial_relation O B-poi I-poi I-poi I-poi
+O O O O B-party_size_number B-spatial_relation B-poi I-poi I-poi
+O O O O O O B-state I-state I-state I-state
+O O O O O O B-city I-city B-state O O B-timeRange
+O O B-music_item O O O B-year
+O O O O B-service I-service
+O O B-object_name I-object_name I-object_name I-object_name O B-rating_value
+O B-rating_value O B-best_rating B-rating_unit O B-object_select B-object_type
+O O B-object_type I-object_type O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name
+O O O B-object_name I-object_name I-object_name B-object_type
+O O O B-object_type I-object_type B-timeRange I-timeRange I-timeRange I-timeRange O O B-location_name I-location_name I-location_name
+O O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O

@@ -39,9 +39,9 @@ def get_n_percent_from(task, n):
         os.makedirs(directory)
 
     # declare outputfiles
-    outfile_label = open('{}/{}%/label'.format(task,n),'w')
-    outfile_in = open('{}/{}%/seq.in'.format(task,n),'w')
-    outfile_out = open('{}/{}%/seq.out'.format(task,n),'w')
+    outfile_label = open('{}/{}%/label'.format(task,n),'w', encoding="utf-8")
+    outfile_in = open('{}/{}%/seq.in'.format(task,n),'w', encoding="utf-8")
+    outfile_out = open('{}/{}%/seq.out'.format(task,n),'w',encoding="utf-8")
 
     # get unique intent_labels from whatever task
     intent_labels = get_intent_labels(task)
@@ -97,4 +97,5 @@ def get_k_samples_from(task, k):
     outfile_in.close()
     outfile_out.close()
 
-get_k_samples_from('snips',5)
+
+get_n_percent_from('snips', 4)
