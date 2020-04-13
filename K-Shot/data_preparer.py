@@ -98,4 +98,4 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-get_n_percent_from('atis', 8)
+get_n_percent_from('snips', 50)
