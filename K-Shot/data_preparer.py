@@ -33,7 +33,7 @@ def get_n_percent_from(task, n):
     # concatenate all dfs horizontally
     df = pd.concat([df_label,df_in,df_out],axis=1)
     # shuffle rows of df
-    # df = shuffle(df)
+    df = shuffle(df)
     directory = "{}/{}%".format(task, n)
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -98,4 +98,4 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-get_n_percent_from('fb-alarm', 2)
+get_n_percent_from('snips', 2)
