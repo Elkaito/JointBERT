@@ -28,7 +28,7 @@ def write_to_file(outfile_label, outfile_in, outfile_out, data):
 def get_n_percent_from(task, n):
     # create data frames
     df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'])
-    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task), names=['seq.in'])
+    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task),   names=['seq.in'])
     df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'])
     # concatenate all dfs horizontally
     df = pd.concat([df_label,df_in,df_out],axis=1)
