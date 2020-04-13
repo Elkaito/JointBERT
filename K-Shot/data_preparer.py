@@ -27,9 +27,9 @@ def write_to_file(outfile_label, outfile_in, outfile_out, data):
 # n = percentage as integer n=1 equals 1%
 def get_n_percent_from(task, n):
     # create data frames
-    df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'])
-    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task),   names=['seq.in'])
-    df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'])
+    df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'], sep="\n")
+    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task),   names=['seq.in'], sep="\n")
+    df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'], sep="\n")
     # concatenate all dfs horizontally
     df = pd.concat([df_label,df_in,df_out],axis=1)
     # shuffle rows of df
@@ -98,4 +98,4 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-get_n_percent_from('snips', 50)
+get_n_percent_from('fb-weather', 2)
