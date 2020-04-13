@@ -97,4 +97,4 @@ def get_k_samples_from(task, k):
     outfile_in.close()
     outfile_out.close()
 
-get_k_samples_from('fb-reminder',10)
+get_k_samples_from('snips',1)
