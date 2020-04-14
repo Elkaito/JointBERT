@@ -97,5 +97,6 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-k=1
+k=5
 get_k_samples_from('snips', k)
+get_k_samples_from('atis', k)
