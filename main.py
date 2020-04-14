@@ -18,6 +18,14 @@ def main(args):
     if args.do_train:
         trainer.train()
 
+        args.task="snips"
+        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+        trainer.train()
+
     if args.do_eval:
         trainer.load_model()
         trainer.evaluate("test")
