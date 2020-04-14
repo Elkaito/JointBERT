@@ -63,9 +63,9 @@ def get_n_percent_from(task, n):
 
 def get_k_samples_from(task, k):
     # create data frames
-    df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'])
-    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task), names=['seq.in'])
-    df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'])
+    df_label = pd.read_csv('{}/fullTrain/label'.format(task), names=['label'], sep="\n")
+    df_in = pd.read_csv('{}/fullTrain/seq.in'.format(task), names=['seq.in'], sep="\n")
+    df_out = pd.read_csv('{}/fullTrain/seq.out'.format(task), names=['seq.out'], sep="\n")
     # concatenate all dfs horizontally
     df = pd.concat([df_label,df_in,df_out],axis=1)
     # shuffle rows of df
@@ -75,9 +75,9 @@ def get_k_samples_from(task, k):
         os.makedirs(directory)
 
     # declare outputfiles
-    outfile_label = open('{}/K{}/label'.format(task, k), 'w')
-    outfile_in = open('{}/K{}/seq.in'.format(task, k), 'w')
-    outfile_out = open('{}/K{}/seq.out'.format(task, k), 'w')
+    outfile_label = open('{}/K{}/label'.format(task, k), 'w', encoding="utf-8")
+    outfile_in = open('{}/K{}/seq.in'.format(task, k), 'w', encoding="utf-8")
+    outfile_out = open('{}/K{}/seq.out'.format(task, k), 'w', encoding="utf-8")
 
     # get unique intent_labels from whatever task
     intent_labels = get_intent_labels(task)
@@ -87,7 +87,6 @@ def get_k_samples_from(task, k):
 
     for intent_label in intent_labels:
         # num_examples = int(np.ceil(count_dict[intent_label] * k))
-        print(intent_label)
         num_examples = k
         is_label = df['label']==intent_label
         data_points = df[is_label].values[0:num_examples]
@@ -98,7 +97,5 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-p=8
-get_n_percent_from('fb-weather', p)
-get_n_percent_from('fb-reminder', p)
-get_n_percent_from('fb-alarm', p)
+k=1
+get_k_samples_from('snips', k)
