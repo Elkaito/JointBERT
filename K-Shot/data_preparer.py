@@ -98,7 +98,7 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-p=50
+p=8
 get_n_percent_from('fb-weather', p)
 get_n_percent_from('fb-reminder', p)
 get_n_percent_from('fb-alarm', p)
