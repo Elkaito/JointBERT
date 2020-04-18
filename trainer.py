@@ -42,7 +42,7 @@ class Trainer(object):
 
     def train(self):
         train_sampler = RandomSampler(self.train_dataset)
-        train_dataloader = DataLoader(self.train_dataset, sampler=train_sampler, batch_size=self.args.batch_size)
+        train_dataloader = DataLoader(self.train_dataset, sampler=train_sampler, batch_size=self.args.batch_size, shuffle=True)
 
         if self.args.max_steps > 0:
             t_total = self.args.max_steps
@@ -116,7 +116,7 @@ class Trainer(object):
                 # Get current performance on dev set
                 dev_performance = self.evaluate("dev")
                 score = self.get_score(dev_performance)
-                print(type(score))
+
                 # Update model when better than max_performance
                 if score > max_performance:
                     self.save_model()
