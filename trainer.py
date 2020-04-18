@@ -115,9 +115,10 @@ class Trainer(object):
 
                 # Get current performance on dev set
                 dev_performance = self.evaluate("dev")
-
+                score = self.get_score(dev_performance)
+                print(type(score))
                 # Update model when better than max_performance
-                if self.get_score(dev_performance) > max_performance:
+                if score > max_performance:
                     self.save_model()
                     max_performance = dev_performance
 
