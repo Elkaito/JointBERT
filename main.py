@@ -3,7 +3,7 @@ import argparse
 from trainer import Trainer
 from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP
 from data_loader import load_and_cache_examples
-
+import time
 
 def main(args):
     init_logger()
@@ -27,8 +27,15 @@ def main(args):
         texts = read_prediction_text(args)
         trainer.predict(texts, tokenizer)
 
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print("Total run time: " + str(elapsed_time))
 
 if __name__ == '__main__':
+
+    start_time = time.time()
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--task", default=None, required=True, type=str, help="The name of the task to train")
