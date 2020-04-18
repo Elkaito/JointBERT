@@ -42,8 +42,8 @@ class Trainer(object):
         return result
 
     def train(self):
-        train_sampler = RandomSampler(self.train_dataset)
-        train_dataloader = DataLoader(self.train_dataset, sampler=train_sampler, batch_size=self.args.batch_size, shuffle=True)
+
+        train_dataloader = DataLoader(self.train_dataset, batch_size=self.args.batch_size, shuffle=True)
 
         if self.args.max_steps > 0:
             t_total = self.args.max_steps
