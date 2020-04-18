@@ -4,6 +4,8 @@ from trainer import Trainer
 from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP
 from data_loader import load_and_cache_examples
 import time
+from datetime import timedelta
+
 
 def main(args):
     init_logger()
@@ -30,7 +32,7 @@ def main(args):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    print("Total run time: " + str(elapsed_time))
+    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
 
 if __name__ == '__main__':
 
