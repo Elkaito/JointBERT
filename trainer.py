@@ -36,7 +36,7 @@ class Trainer(object):
         metrics = ['intent_acc', 'sementic_frame_acc', 'slot_f1']
         result = 0.0
         for key in metrics:
-            result = result + performance[key]
+            result = result + float(performance[key])
 
         return result
 
