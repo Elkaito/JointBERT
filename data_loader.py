@@ -108,7 +108,15 @@ class JointProcessor(object):
         Args:
             mode: train, dev, test
         """
-        data_path = os.path.join(self.args.data_dir, self.args.task, mode)
+        if self.args.K and mode == "train":
+            data_path = os.path.join(self.args.data_dir, self.args.task, "K{}".format(self.args.K))
+
+        elif self.args.percent and mode == "train":
+            data_path = os.path.join(self.args.data_dir, self.args.task, "{}%".format(self.args.percent))
+
+        else:
+            data_path = os.path.join(self.args.data_dir, self.args.task, mode)
+
         logger.info("LOOKING AT {}".format(data_path))
         return self._create_examples(texts=self._read_file(os.path.join(data_path, self.input_text_file)),
                                      intents=self._read_file(os.path.join(data_path, self.intent_label_file)),

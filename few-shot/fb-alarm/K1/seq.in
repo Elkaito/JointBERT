@@ -1,0 +1,5 @@
+set alarm every hour for 24 hours .
+reset alarm
+repeat 7 am alarm monday thru friday
+snooze for 5 minutes
+how much time on my alarm

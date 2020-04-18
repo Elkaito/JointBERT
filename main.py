@@ -18,14 +18,6 @@ def main(args):
     if args.do_train:
         trainer.train()
 
-        args.task="snips"
-        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
-        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
-        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
-
-        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
-        trainer.train()
-
     if args.do_eval:
         trainer.load_model()
         trainer.evaluate("test")
@@ -47,6 +39,11 @@ if __name__ == '__main__':
 
     parser.add_argument("--model_type", default="bert", type=str, help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
+    # For few-shot learning
+    parser.add_argument("--K", default=None, type=int, help="train with K samples at most for every intent")
+    parser.add_argument("--percent", default=None,  type=int, help="train with K samples at most for every intent")
+
+    # Training details
     parser.add_argument('--seed', type=int, default=1234, help="random seed for initialization")
     parser.add_argument("--batch_size", default=16, type=int, help="Batch size for training and evaluation.")
     parser.add_argument("--max_seq_len", default=50, type=int, help="The maximum total input sequence length after tokenization.")
@@ -84,6 +81,7 @@ if __name__ == '__main__':
     parser.add_argument("--slot_pad_label", default="PAD", type=str, help="Pad token for slot label pad (to be ignore when calculate loss)")
 
     args = parser.parse_args()
+
 
     args.model_name_or_path = MODEL_PATH_MAP[args.model_type]
     main(args)

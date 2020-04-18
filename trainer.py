@@ -76,7 +76,7 @@ class Trainer(object):
                 inputs = {'input_ids': batch[0],
                           'attention_mask': batch[1],
                           'intent_label_ids': batch[3],
-                          'slot_labels_ids': batch[4]}
+                          loss.backward()             'slot_labels_ids': batch[4]}
                 if self.args.model_type != 'distilbert':
                     inputs['token_type_ids'] = batch[2]
                 outputs = self.model(**inputs)
@@ -85,7 +85,7 @@ class Trainer(object):
                 if self.args.gradient_accumulation_steps > 1:
                     loss = loss / self.args.gradient_accumulation_steps
 
-                loss.backward()
+
 
                 tr_loss += loss.item()
                 if (step + 1) % self.args.gradient_accumulation_steps == 0:
@@ -95,7 +95,7 @@ class Trainer(object):
                     scheduler.step()  # Update learning rate schedule
                     self.model.zero_grad()
                     global_step += 1
-
+                    #
                     if self.args.logging_steps > 0 and global_step % self.args.logging_steps == 0:
                         self.evaluate("dev")
 
