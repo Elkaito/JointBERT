@@ -109,7 +109,7 @@ class Trainer(object):
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()
                 break
-
+        self.save_model()
         return global_step, tr_loss / global_step
 
     def evaluate(self, mode):
