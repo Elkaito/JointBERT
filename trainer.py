@@ -34,7 +34,7 @@ class Trainer(object):
 
     def get_score(self, performance):
         metrics = ['intent_acc', 'sementic_frame_acc', 'slot_f1']
-        result = 0
+        result = 0.0
         for key in metrics:
             result = result + performance[key]
 
@@ -75,7 +75,7 @@ class Trainer(object):
         train_iterator = trange(int(self.args.num_train_epochs), desc="Epoch")
         set_seed(self.args)
 
-        max_performance = 0
+        max_performance = 0.0
 
         for _ in train_iterator:
             epoch_iterator = tqdm(train_dataloader, desc="Iteration")
@@ -117,14 +117,14 @@ class Trainer(object):
                 dev_performance = self.evaluate("dev")
 
                 # Update model when better than max_performance
-                if get_score(dev_performance) > max_performance:
+                if self.get_score(dev_performance) > max_performance:
                     self.save_model()
                     max_performance = dev_performance
 
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()
                 break
-        self.save_model()
+
         return global_step, tr_loss / global_step
 
     def evaluate(self, mode):
