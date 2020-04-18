@@ -120,7 +120,7 @@ class Trainer(object):
                 # Update model when better than max_performance
                 if score > max_performance:
                     self.save_model()
-                    max_performance = dev_performance
+                    max_performance = score
 
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()
