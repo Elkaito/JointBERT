@@ -32,6 +32,14 @@ class Trainer(object):
         self.device = "cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu"
         self.model.to(self.device)
 
+    def get_score(self, performance):
+        metrics = ['intent_acc', 'sementic_frame_acc', 'slot_f1']
+        result = 0
+        for key in metrics:
+            result = result + performance[key]
+
+        return result
+
     def train(self):
         train_sampler = RandomSampler(self.train_dataset)
         train_dataloader = DataLoader(self.train_dataset, sampler=train_sampler, batch_size=self.args.batch_size)
@@ -67,6 +75,8 @@ class Trainer(object):
         train_iterator = trange(int(self.args.num_train_epochs), desc="Epoch")
         set_seed(self.args)
 
+        max_performance = 0
+
         for _ in train_iterator:
             epoch_iterator = tqdm(train_dataloader, desc="Iteration")
             for step, batch in enumerate(epoch_iterator):
@@ -96,16 +106,20 @@ class Trainer(object):
                     scheduler.step()  # Update learning rate schedule
                     self.model.zero_grad()
                     global_step += 1
-                    #
-                    if self.args.logging_steps > 0 and global_step % self.args.logging_steps == 0:
-                        self.evaluate("dev")
-
-                    if self.args.save_steps > 0 and global_step % self.args.save_steps == 0:
-                        self.save_model()
 
                 if 0 < self.args.max_steps < global_step:
                     epoch_iterator.close()
                     break
+
+                # After epoch, evaluate on dev set and save the best model parameters
+
+                # Get current performance on dev set
+                dev_performance = self.evaluate("dev")
+
+                # Update model when better than max_performance
+                if get_score(dev_performance) > max_performance:
+                    self.save_model()
+                    max_performance = dev_performance
 
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()

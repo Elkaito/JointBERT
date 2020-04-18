@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     # Training details
     parser.add_argument('--seed', type=int, default=1234, help="random seed for initialization")
-    parser.add_argument("--batch_size", default=16, type=int, help="Batch size for training and evaluation.")
+    parser.add_argument("--batch_size", default=128, type=int, help="Batch size for training and evaluation.")
     parser.add_argument("--max_seq_len", default=50, type=int, help="The maximum total input sequence length after tokenization.")
     parser.add_argument("--learning_rate", default=5e-5, type=float, help="The initial learning rate for Adam.")
     parser.add_argument("--num_train_epochs", default=30.0, type=float, help="Total number of training epochs to perform.")
