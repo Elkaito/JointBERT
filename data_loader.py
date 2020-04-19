@@ -108,12 +108,12 @@ class JointProcessor(object):
         Args:
             mode: train, dev, test
         """
-        if self.args.K and mode == "train":
-            data_path = os.path.join(self.args.data_dir, self.args.task, "K{}".format(self.args.K))
+        if self.data_dir == "./few-shot" and mode == "train":
+            if self.args.K:
+                data_path = os.path.join(self.args.data_dir, self.args.task, "K{}".format(self.args.K))
 
-        elif self.args.percent and mode == "train":
-            data_path = os.path.join(self.args.data_dir, self.args.task, "{}%".format(self.args.percent))
-
+            elif self.args.percent:
+                data_path = os.path.join(self.args.data_dir, self.args.task, "{}%".format(self.args.percent))
         else:
             data_path = os.path.join(self.args.data_dir, self.args.task, mode)
 
@@ -122,7 +122,6 @@ class JointProcessor(object):
                                      intents=self._read_file(os.path.join(data_path, self.intent_label_file)),
                                      slots=self._read_file(os.path.join(data_path, self.slot_labels_file)),
                                      set_type=mode)
-
 
 processors = {
     "atis": JointProcessor,

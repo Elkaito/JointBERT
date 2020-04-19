@@ -17,7 +17,7 @@ def main(args):
         tokenizer = load_tokenizer(args)
         main_task = args.task
         pre_task = args.pre_task
-        # Train on pretrain task
+        # Train on pretrain task on full dataset
         args.task = pre_task
         pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         pre_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
@@ -31,8 +31,8 @@ def main(args):
             trainer.load_model()
             # Train on main_task
             args.task = main_task
-            args.data_dir="./few-shot"
-            args.K=1
+            args.data_dir = "./few-shot"
+            args.K = 1
             train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
             dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
             test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
