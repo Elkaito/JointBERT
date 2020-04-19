@@ -8,26 +8,60 @@ from datetime import timedelta
 
 
 def main(args):
+
     init_logger()
     tokenizer = load_tokenizer(args)
 
-    train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
-    dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
-    test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+    if args.pretrain_task:
 
-    trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+        tokenizer = load_tokenizer(args)
+        main_task = args.task
+        pre_task = args.pretrain_task
+        # Train on pretrain task
+        args.task = pre_task
+        pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        pre_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        pre_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
 
-    if args.do_train:
-        trainer.train()
+        trainer = Trainer(args, pre_train_dataset, pre_dev_dataset, pre_test_dataset)
 
-    if args.do_eval:
-        trainer.load_model()
-        trainer.evaluate("test")
+        if args.do_train:
+            #Pre train on pre_task
+            trainer.train()
+            trainer.load_model()
+            # Train on main_task
+            args.task = main_task
+            train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+            dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+            test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
 
-    if args.do_pred:
-        trainer.load_model()
-        texts = read_prediction_text(args)
-        trainer.predict(texts, tokenizer)
+            trainer.train_dataset = train_dataset
+            trainer.dev_dataset = dev_dataset
+            trainer.test_dataset = test_dataset
+            trainer.train()
+
+        if args.do_eval:
+            trainer.load_model()
+            trainer.evaluate("test")
+
+    else:
+        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+
+        if args.do_train:
+            trainer.train()
+
+        if args.do_eval:
+            trainer.load_model()
+            trainer.evaluate("test")
+
+        if args.do_pred:
+            trainer.load_model()
+            texts = read_prediction_text(args)
+            trainer.predict(texts, tokenizer)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -51,6 +85,7 @@ if __name__ == '__main__':
     # For few-shot learning
     parser.add_argument("--K", default=None, type=int, help="train with K samples at most for every intent")
     parser.add_argument("--percent", default=None,  type=int, help="train with K samples at most for every intent")
+    parser.add_argument("--pretrain_task", default=None, type=str, help="The name of task to pretrain on")
 
     # Training details
     parser.add_argument('--seed', type=int, default=1234, help="random seed for initialization")
