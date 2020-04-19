@@ -108,7 +108,7 @@ class JointProcessor(object):
         Args:
             mode: train, dev, test
         """
-        if self.data_dir == "./few-shot" and mode == "train":
+        if self.args.data_dir == "./few-shot" and mode == "train":
             if self.args.K:
                 data_path = os.path.join(self.args.data_dir, self.args.task, "K{}".format(self.args.K))
 
