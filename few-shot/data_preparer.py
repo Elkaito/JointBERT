@@ -100,7 +100,7 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-p=[1,2,4,8,10,50]
 
-for i in p:
-    get_n_percent_from('snips', i)
+
+
+get_k_samples_from('snips', 1913 )
