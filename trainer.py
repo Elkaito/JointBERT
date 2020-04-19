@@ -108,10 +108,6 @@ class Trainer(object):
                     self.model.zero_grad()
                     global_step += 1
 
-                if 0 < self.args.max_steps < global_step:
-                    epoch_iterator.close()
-                    break
-
                 # After epoch, evaluate on dev set and save the best model parameters
 
                 # Get current performance on dev set
