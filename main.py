@@ -16,7 +16,7 @@ def main(args):
 
         tokenizer = load_tokenizer(args)
         main_task = args.task
-        pre_task = args.pretrain_task
+        pre_task = args.pre_task
         # Train on pretrain task
         args.task = pre_task
         pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
