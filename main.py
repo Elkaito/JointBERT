@@ -91,9 +91,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    args.K = int(args.K)
-
-
-
     args.model_name_or_path = MODEL_PATH_MAP[args.model_type]
     main(args)
