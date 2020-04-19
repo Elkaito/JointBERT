@@ -14,10 +14,9 @@ def main(args):
 
     if args.pre_task:
 
-        tokenizer = load_tokenizer(args)
         main_task = args.task
         pre_task = args.pre_task
-        # Train on pretrain task on full dataset
+        # Pretrain task on full dataset
         args.task = pre_task
         pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         pre_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
@@ -25,10 +24,28 @@ def main(args):
 
         trainer = Trainer(args, pre_train_dataset, pre_dev_dataset, pre_test_dataset)
 
+
         if args.do_train:
-            #Pre train on pre_task
+            #Pre train on pre_task 1
             trainer.train()
+
+            if args.pre_task_2: # Pre train on task 2 if specified
+
+                trainer.load_model() # load params from task 1
+                pre_task_2 = args.pre_task_2
+                # Pretrain on full dataset
+                args.task = pre_task_2
+                pre2_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+                pre2_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+                pre2_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+                trainer.train_dataset = pre2_train_dataset
+                trainer.dev_dataset = pre2_dev_dataset
+                trainer.test_dataset = pre2_test_dataset
+                trainer.train()
+
             trainer.load_model()
+
             # Train on main_task
             args.task = main_task
             args.data_dir = "./few-shot"
@@ -87,6 +104,7 @@ if __name__ == '__main__':
     parser.add_argument("--K", default=None, type=int, help="train with K samples at most for every intent")
     parser.add_argument("--percent", default=None,  type=int, help="train with K samples at most for every intent")
     parser.add_argument("--pre_task", default=None, type=str, help="The name of task to pretrain on")
+    parser.add_argument("--pre_task_2", default=None, type=str, help="The name of second task to pretrain on")
 
     # Training details
     parser.add_argument('--seed', type=int, default=1234, help="random seed for initialization")
