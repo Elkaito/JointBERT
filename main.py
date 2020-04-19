@@ -49,8 +49,8 @@ if __name__ == '__main__':
     parser.add_argument("--model_type", default="bert", type=str, help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
     # For few-shot learning
-    parser.add_argument("--K", default=None, type=str, help="train with K samples at most for every intent")
-    parser.add_argument("--percent", default=None,  type=str, help="train with K samples at most for every intent")
+    parser.add_argument("--K", default=None, type=int, help="train with K samples at most for every intent")
+    parser.add_argument("--percent", default=None,  type=int, help="train with K samples at most for every intent")
 
     # Training details
     parser.add_argument('--seed', type=int, default=1234, help="random seed for initialization")

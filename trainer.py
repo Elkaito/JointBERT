@@ -108,16 +108,16 @@ class Trainer(object):
                     self.model.zero_grad()
                     global_step += 1
 
-                # After epoch, evaluate on dev set and save the best model parameters
+            # After epoch, evaluate on dev set and save the best model parameters
 
-                # Get current performance on dev set
-                dev_performance = self.evaluate("dev")
-                score = self.get_score(dev_performance)
+            # Get current performance on dev set
+            dev_performance = self.evaluate("dev")
+            score = self.get_score(dev_performance)
 
-                # Update model when better than max_performance
-                if score > max_performance:
-                    self.save_model()
-                    max_performance = score
+            # Update model when better than max_performance
+            if score > max_performance:
+                self.save_model()
+                max_performance = score
 
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()

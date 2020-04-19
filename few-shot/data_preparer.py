@@ -100,11 +100,7 @@ def get_k_samples_from(task, k):
     outfile_out.close()
 
 
-k=[1,5,10,25,50]
+p=[1,2,4,8,10,50]
 
-for i in k:
-    get_k_samples_from('snips', i)
-    get_k_samples_from('atis', i)
-    get_k_samples_from('fb-alarm', i)
-    get_k_samples_from('fb-reminder', i)
-    get_k_samples_from('fb-weather', i)
+for i in p:
+    get_n_percent_from('snips', i)
