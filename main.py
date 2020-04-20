@@ -65,11 +65,6 @@ def main(args):
 
     # CASE 2: If pretask not atis, main task has to be trained first, then pre task. Else it will breake the code
     if args.pre_task:
-        init_logger()
-    tokenizer = load_tokenizer(args)
-
-    # Case 1: If pre task is atis, train on atis first, then main task
-    if args.pre_task  and args.pre_task == "atis":
 
         main_task = args.task
         pre_task = args.pre_task
@@ -125,6 +120,7 @@ def main(args):
 
         if args.do_train:
             trainer.train()
+
 
         if args.do_eval:
             trainer.load_model()
