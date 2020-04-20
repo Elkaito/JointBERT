@@ -16,6 +16,63 @@ def main(args):
 
         main_task = args.task
         pre_task = args.pre_task
+        # Train task on main task
+        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+
+        if args.do_train:
+            trainer.train()
+            trainer.load_model()
+            ### train on pre task
+            args.data_dir = "./data"
+            args.task = pre_task
+            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
+            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
+            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
+            trainer.train_dataset = pre_train_set
+            trainer.dev_dataset = pre_dev_set
+            trainer.test_dataset = pre_test_set
+            trainer.train()
+
+        if args.do_eval:
+            trainer.load_model()
+            trainer.evaluate("test")
+    else:
+        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+
+        if args.do_train:
+            trainer.train()
+
+        if args.do_eval:
+            trainer.load_model()
+            trainer.evaluate("test")
+
+        if args.do_pred:
+            trainer.load_model()
+            texts = read_prediction_text(args)
+            trainer.predict(texts, tokenizer)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
+"""
+def main(args):
+
+    init_logger()
+    tokenizer = load_tokenizer(args)
+
+    if args.pre_task:
+
+        main_task = args.task
+        pre_task = args.pre_task
         # Pretrain task on full dataset
         args.task = pre_task
         pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
@@ -84,8 +141,7 @@ def main(args):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
-
+    print("Total run time: " + str(timedelta(seconds=elapsed_time)))"""
 if __name__ == '__main__':
 
     start_time = time.time()
