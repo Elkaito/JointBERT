@@ -37,8 +37,10 @@ class JointBERT(BertPreTrainedModel):
     def __init__(self, bert_config, args, intent_label_lst, slot_label_lst):
         super(JointBERT, self).__init__(bert_config)
         self.args = args
-        self.num_intent_labels = len(intent_label_lst)
-        self.num_slot_labels = len(slot_label_lst)
+        # self.num_intent_labels = len(intent_label_lst)
+        # self.num_slot_labels = len(slot_label_lst)
+        self.num_intent_labels = 22
+        self.num_slot_labels = 122
         if args.do_pred:
             self.bert = PRETRAINED_MODEL_MAP[args.model_type](config=bert_config)
         else:

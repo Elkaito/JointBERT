@@ -33,6 +33,7 @@ class Trainer(object):
         self.device = "cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu"
         self.model.to(self.device)
 
+
     def get_score(self, performance):
         metrics = ['intent_acc', 'sementic_frame_acc', 'slot_f1']
         result = 0.0
