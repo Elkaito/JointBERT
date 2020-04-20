@@ -89,6 +89,18 @@ def main(args):
             trainer.test_dataset = pre_test_set
             trainer.train()
 
+            if args.pre_task_2: # Pre train on task 2 if specified
+                trainer.load_model()
+                args.task = args.pre_task_2
+                pre_train_set2 = load_and_cache_examples(args, tokenizer, mode="train")
+                pre_dev_set2 = load_and_cache_examples(args, tokenizer, mode="dev")
+                pre_test_set2 = load_and_cache_examples(args, tokenizer, mode="test")
+                trainer.train_dataset = pre_train_set2
+                trainer.dev_dataset = pre_dev_set2
+                trainer.test_dataset = pre_test_set2
+                trainer.train()
+
+
         if args.do_eval:
             trainer.load_model()
             args.task = main_task
