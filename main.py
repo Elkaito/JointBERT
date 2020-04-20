@@ -40,6 +40,7 @@ def main(args):
         if args.do_eval:
             trainer.load_model()
             args.task = main_task
+            trainer.test_dataset = test_dataset
             args.data_dir = "./few-shot"
             trainer.evaluate("test")
 
