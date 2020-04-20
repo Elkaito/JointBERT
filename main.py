@@ -65,36 +65,57 @@ def main(args):
 
     # CASE 2: If pretask not atis, main task has to be trained first, then pre task. Else it will breake the code
     if args.pre_task:
+        init_logger()
+    tokenizer = load_tokenizer(args)
+
+    # Case 1: If pre task is atis, train on atis first, then main task
+    if args.pre_task  and args.pre_task == "atis":
+
         main_task = args.task
         pre_task = args.pre_task
-        # Train task on main task
-        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
-        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
-        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+        # Pretrain task on full dataset
+        args.task = pre_task
+        pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        pre_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        pre_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
 
-        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+        trainer = Trainer(args, pre_train_dataset, pre_dev_dataset, pre_test_dataset)
+
 
         if args.do_train:
+            #Pre train on pre_task 1
             trainer.train()
-            trainer.load_model()
-            ### train on pre task
-            args.data_dir = "./data"
-            args.task = pre_task
-            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
-            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
-            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
-            trainer.train_dataset = pre_train_set
-            trainer.dev_dataset = pre_dev_set
-            trainer.test_dataset = pre_test_set
+
+            if args.pre_task_2: # Pre train on task 2 if specified
+
+                trainer.load_model() # load params from task 1
+                pre_task_2 = args.pre_task_2
+                # Pretrain on full dataset
+                args.task = pre_task_2
+                pre2_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+                pre2_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+                pre2_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+                trainer.train_dataset = pre2_train_dataset
+                trainer.dev_dataset = pre2_dev_dataset
+                trainer.test_dataset = pre2_test_dataset
+                trainer.train()
+
+            # Train on main_task
+            args.task = main_task
+            args.data_dir = "./few-shot"
+            train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+            dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+            test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+            trainer.train_dataset = train_dataset
+            trainer.dev_dataset = dev_dataset
+            trainer.test_dataset = test_dataset
             trainer.train()
 
         if args.do_eval:
-            trainer.load_model()
-            args.task = main_task
-            trainer.test_dataset = test_dataset
-            args.data_dir = "./few-shot"
-            trainer.evaluate("test")
 
+            trainer.evaluate("test")
     else:
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
