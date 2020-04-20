@@ -12,7 +12,8 @@ def main(args):
     init_logger()
     tokenizer = load_tokenizer(args)
 
-    if args.pre_task:
+    # Case 1: If pre task is atis, train on atis first, then main task
+    if args.pre_task  and args.pre_task == "atis":
 
         main_task = args.task
         pre_task = args.pre_task
@@ -44,7 +45,7 @@ def main(args):
                 trainer.test_dataset = pre2_test_dataset
                 trainer.train()
 
-
+            trainer.load_model()
 
             # Train on main_task
             args.task = main_task
@@ -62,38 +63,8 @@ def main(args):
             trainer.load_model()
             trainer.evaluate("test")
 
-    else:
-        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
-        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
-        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
-
-        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
-
-        if args.do_train:
-            trainer.train()
-
-        if args.do_eval:
-            trainer.load_model()
-            trainer.evaluate("test")
-
-        if args.do_pred:
-            trainer.load_model()
-            texts = read_prediction_text(args)
-            trainer.predict(texts, tokenizer)
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-
-    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
-
-"""
-def main(args):
-
-    init_logger()
-    tokenizer = load_tokenizer(args)
-
+    # CASE 2: If pretask not atis, main task has to be trained first, then pre task. Else it will breake the code
     if args.pre_task:
-
         main_task = args.task
         pre_task = args.pre_task
         # Train task on main task
@@ -146,7 +117,9 @@ def main(args):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    print("Total run time: " + str(timedelta(seconds=elapsed_time)))"""
+    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
+
+
 if __name__ == '__main__':
 
     start_time = time.time()
