@@ -233,13 +233,16 @@ class Trainer(object):
         torch.save(self.args, os.path.join(output_dir, 'training_config.bin'))
         logger.info("Saving model checkpoint to %s", output_dir)
 
-    def load_model(self):
+    def load_model(self, final):
         # Cheload_modelck whether model exists
         if not os.path.exists(self.args.model_dir):
             raise Exception("Model doesn't exists! Train first!")
 
         try:
-            self.bert_config = self.config_class.from_pretrained(self.args.model_dir)
+            if final:
+                self.bert_config = self.config_class.from_pretrained(self.args.model_dir,num_labels=22)
+            else:
+                self.bert_config = self.config_class.from_pretrained(self.args.model_dir)
             logger.info("***** Config loaded *****")
             self.model = self.model_class.from_pretrained(self.args.model_dir, config=self.bert_config,
                                                           args=self.args, intent_label_lst=self.intent_label_lst,

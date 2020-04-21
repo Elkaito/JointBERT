@@ -64,48 +64,23 @@ def main(args):
             trainer.evaluate("test")
 
     # CASE 2: If pretask not atis, main task has to be trained first, then pre task. Else it will break the code
-    if args.pre_task:
-        args.data_dir = "./few-shot"
-        main_task = args.task
-        pre_task = args.pre_task
-        # Train task on main task
+    elif args.pre_task:
+        # Load full data for main task
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
         test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
-
         trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
 
-        if args.do_train:
-            trainer.train()
-            trainer.load_model()
-            ### train on pre task
-            args.data_dir = "./data"
-            args.task = pre_task
-            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
-            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
-            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
-            trainer.train_dataset = pre_train_set
-            trainer.dev_dataset = pre_dev_set
-            trainer.test_dataset = pre_test_set
-            trainer.train()
+        # load model config from pre task
+        model_dict = args.model_dict
+        args.model_dict="snips_model"
+        trainer.load_model()
+        args.model_dict = model_dict
 
-            if args.pre_task_2: # Pre train on task 2 if specified
-                trainer.load_model()
-                args.task = args.pre_task_2
-                pre_train_set2 = load_and_cache_examples(args, tokenizer, mode="train")
-                pre_dev_set2 = load_and_cache_examples(args, tokenizer, mode="dev")
-                pre_test_set2 = load_and_cache_examples(args, tokenizer, mode="test")
-                trainer.train_dataset = pre_train_set2
-                trainer.dev_dataset = pre_dev_set2
-                trainer.test_dataset = pre_test_set2
-                trainer.train()
-
+        trainer.train()
 
         if args.do_eval:
-            trainer.load_model()
-            args.task = main_task
-            trainer.test_dataset = test_dataset
-            args.data_dir = "./few-shot"
+            trainer.load_model(final=True)
             trainer.evaluate("test")
 
     else:
