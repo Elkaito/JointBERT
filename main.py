@@ -13,7 +13,7 @@ def main(args):
     tokenizer = load_tokenizer(args)
 
     # Case 1: If pre task is atis, train on atis first, then main task
-    if args.pre_task  and args.pre_task == "atis":
+    if args.pre_task and args.pre_task == "atis":
 
         main_task = args.task
         pre_task = args.pre_task
@@ -63,25 +63,57 @@ def main(args):
             trainer.load_model()
             trainer.evaluate("test")
 
-    # CASE 2: If pretask not atis, main task has to be trained first, then pre task. Else it will break the code
+    # CASE 2: If pre task is not atis, main task has to be trained first, then pre task. Else it will break the code
     elif args.pre_task:
-        # Load full data for main task
+        args.data_dir = "./few-shot"
+        main_task = args.task
+        pre_task = args.pre_task
+        # Train task on main task only 1 sample!
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
         test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
-        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
 
-        # load model config from pre task
-        model_dict = args.model_dict
-        args.model_dict="snips_model"
+        trainer = Trainer(args, train_dataset[0:1], dev_dataset[0:1], test_dataset[0:1])
+
+        if args.do_train:
+            trainer.train()
+            trainer.load_model()
+            ### train on pre task
+            args.data_dir = "./data"
+            args.task = pre_task
+            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
+            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
+            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
+            trainer.train_dataset = pre_train_set
+            trainer.dev_dataset = pre_dev_set
+            trainer.test_dataset = pre_test_set
+            trainer.train()
+
+            if args.pre_task_2: # Pre train on task 2 if specified
+                trainer.load_model()
+                args.task = args.pre_task_2
+                pre_train_set2 = load_and_cache_examples(args, tokenizer, mode="train")
+                pre_dev_set2 = load_and_cache_examples(args, tokenizer, mode="dev")
+                pre_test_set2 = load_and_cache_examples(args, tokenizer, mode="test")
+                trainer.train_dataset = pre_train_set2
+                trainer.dev_dataset = pre_dev_set2
+                trainer.test_dataset = pre_test_set2
+                trainer.train()
+
         trainer.load_model()
-        args.model_dict = model_dict
-
+        args.data_dir = "./few-shot"
+        trainer.train_dataset = train_dataset
+        trainer.dev_dataset = dev_dataset
+        trainer.test_dataset =test_dataset
         trainer.train()
 
         if args.do_eval:
-            trainer.load_model(final=True)
+            trainer.load_model()
+            args.task = main_task
+            trainer.test_dataset = test_dataset
+            args.data_dir = "./few-shot"
             trainer.evaluate("test")
+
 
     else:
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")

@@ -239,10 +239,7 @@ class Trainer(object):
             raise Exception("Model doesn't exists! Train first!")
 
         try:
-            if final:
-                self.bert_config = self.config_class.from_pretrained(self.args.model_dir,num_labels=22)
-            else:
-                self.bert_config = self.config_class.from_pretrained(self.args.model_dir)
+            self.bert_config = self.config_class.from_pretrained(self.args.model_dir)
             logger.info("***** Config loaded *****")
             self.model = self.model_class.from_pretrained(self.args.model_dir, config=self.bert_config,
                                                           args=self.args, intent_label_lst=self.intent_label_lst,
