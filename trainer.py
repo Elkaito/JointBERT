@@ -237,16 +237,20 @@ class Trainer(object):
         if not os.path.exists(self.args.model_dir):
             raise Exception("Model doesn't exists! Train first!")
 
+        # Check whether model exists
+        if not os.path.exists(self.args.model_dir):
+            raise Exception("Model doesn't exists! Train first!")
+
         try:
-            self.bert_config = self.config_class.from_pretrained(self.args.model_dir)
-            logger.info("***** Config loaded *****")
-            self.model = self.model_class.from_pretrained(self.args.model_dir, config=self.bert_config,
-                                                          args=self.args, intent_label_lst=self.intent_label_lst,
+            self.model = self.model_class.from_pretrained(self.args.model_dir,
+                                                          args=self.args,
+                                                          intent_label_lst=self.intent_label_lst,
                                                           slot_label_lst=self.slot_label_lst)
             self.model.to(self.device)
             logger.info("***** Model Loaded *****")
         except:
             raise Exception("Some model files might be missing...")
+
 
     def _convert_texts_to_tensors(self, texts, tokenizer,
                                   cls_token_segment_id=0,
