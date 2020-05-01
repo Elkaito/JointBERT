@@ -81,6 +81,7 @@ def main(args):
         args.task = main_task
         # data_dir for few-shot
         args.data_dir = "./few-shot"
+        trainer.device = "cpu"
         # Get main task data
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
