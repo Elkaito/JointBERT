@@ -79,6 +79,8 @@ def main(args):
         # Back to original task and model dir
         args.model_dir = model_dir
         args.task = main_task
+        # data_dir for few-shot
+        args.data_dir = "./few-shot"
         # Get main task data
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
