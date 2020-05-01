@@ -4,7 +4,7 @@ from tqdm import tqdm, trange
 
 import numpy as np
 import torch
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
+# torch.set_default_tensor_type(torch.cuda.FloatTensor)
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from transformers import BertConfig, AdamW, get_linear_schedule_with_warmup
 from utils import MODEL_CLASSES, set_seed, compute_metrics, get_intent_labels, get_slot_labels

@@ -1,5 +1,5 @@
 import argparse
-
+import torch.nn as nn
 from trainer import Trainer
 from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP, get_intent_labels, get_slot_labels
 from data_loader import load_and_cache_examples
@@ -89,8 +89,8 @@ def main(args):
         trainer.dev_dataset = dev_dataset
         trainer.test_dataset = test_dataset
         # Change model output_layer
-        trainer.model.intent_classifier = IntentClassifier(trainer.bert_config.hidden_size, len(get_intent_labels(args)), args.dropout_rate)
-        trainer.model.intent_classifier = SlotClassifier(trainer.bert_config.hidden_size, len(get_slot_labels(args)), args.dropout_rate)
+        trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
+        trainer.model.intent_classifier = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
         trainer.train()
 
         if args.do_eval:
