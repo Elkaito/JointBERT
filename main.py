@@ -1,11 +1,11 @@
 import argparse
 
 from trainer import Trainer
-from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP
+from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP, get_intent_labels, get_slot_labels
 from data_loader import load_and_cache_examples
 import time
 from datetime import timedelta
-
+from model import JointBERT, IntentClassifier, SlotClassifier
 
 def main(args):
 
@@ -24,7 +24,6 @@ def main(args):
         pre_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
 
         trainer = Trainer(args, pre_train_dataset, pre_dev_dataset, pre_test_dataset)
-
 
         if args.do_train:
             #Pre train on pre_task 1
@@ -63,58 +62,37 @@ def main(args):
             trainer.load_model()
             trainer.evaluate("test")
 
-    # CASE 2: If pre task is not atis, main task has to be trained first, then pre task. Else it will break the code
+    # CASE 2: Pre task not atis
     elif args.pre_task:
-        args.data_dir = "./few-shot"
         main_task = args.task
         pre_task = args.pre_task
-        # Train task on main task only 1 sample!
+        # Load pre-task data
+        args.task = pre_task
+        pre_train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        pre_dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        pre_test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, pre_train_dataset, pre_dev_dataset, pre_test_dataset)
+        model_dir = args.model_dir
+        args.model_dir = "snips_model"
+        trainer.load_model()
+        # Back to original task and model dir
+        args.model_dir = model_dir
+        args.task = main_task
+        # Get main task data
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
         test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
-
-        trainer = Trainer(args, train_dataset[0:1], dev_dataset[0:1], test_dataset[0:1])
-
-        if args.do_train:
-            trainer.train()
-            trainer.load_model()
-            ### train on pre task
-            args.data_dir = "./data"
-            args.task = pre_task
-            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
-            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
-            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
-            trainer.train_dataset = pre_train_set
-            trainer.dev_dataset = pre_dev_set
-            trainer.test_dataset = pre_test_set
-            trainer.train()
-
-            if args.pre_task_2: # Pre train on task 2 if specified
-                trainer.load_model()
-                args.task = args.pre_task_2
-                pre_train_set2 = load_and_cache_examples(args, tokenizer, mode="train")
-                pre_dev_set2 = load_and_cache_examples(args, tokenizer, mode="dev")
-                pre_test_set2 = load_and_cache_examples(args, tokenizer, mode="test")
-                trainer.train_dataset = pre_train_set2
-                trainer.dev_dataset = pre_dev_set2
-                trainer.test_dataset = pre_test_set2
-                trainer.train()
-
-        trainer.load_model()
-        args.data_dir = "./few-shot"
         trainer.train_dataset = train_dataset
         trainer.dev_dataset = dev_dataset
-        trainer.test_dataset =test_dataset
+        trainer.test_dataset = test_dataset
+        # Change model output_layer
+        trainer.model.intent_classifier = IntentClassifier(trainer.bert_config.hidden_size, get_intent_labels(args))
+        trainer.model.intent_classifier = SlotClassifier(trainer.bert_config.hidden_size, get_slot_labels(args))
         trainer.train()
-
         if args.do_eval:
             trainer.load_model()
-            args.task = main_task
-            trainer.test_dataset = test_dataset
-            args.data_dir = "./few-shot"
             trainer.evaluate("test")
-
-
     else:
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
@@ -201,3 +179,54 @@ if __name__ == '__main__':
 
     args.model_name_or_path = MODEL_PATH_MAP[args.model_type]
     main(args)
+
+"""
+args.data_dir = "./few-shot"
+        main_task = args.task
+        pre_task = args.pre_task
+        # Train task on main task
+        train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
+        dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
+        test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset[0:1], dev_dataset, test_dataset)
+
+        if args.do_train:
+            trainer.train()
+            trainer.load_model()
+            ### train on pre task
+            args.data_dir = "./data"
+            args.task = pre_task
+            pre_train_set = load_and_cache_examples(args, tokenizer, mode="train")
+            pre_dev_set = load_and_cache_examples(args, tokenizer, mode="dev")
+            pre_test_set = load_and_cache_examples(args, tokenizer, mode="test")
+            trainer.train_dataset = pre_train_set
+            trainer.dev_dataset = pre_dev_set
+            trainer.test_dataset = pre_test_set
+            trainer.train()
+
+            if args.pre_task_2: # Pre train on task 2 if specified
+                trainer.load_model()
+                args.task = args.pre_task_2
+                pre_train_set2 = load_and_cache_examples(args, tokenizer, mode="train")
+                pre_dev_set2 = load_and_cache_examples(args, tokenizer, mode="dev")
+                pre_test_set2 = load_and_cache_examples(args, tokenizer, mode="test")
+                trainer.train_dataset = pre_train_set2
+                trainer.dev_dataset = pre_dev_set2
+                trainer.test_dataset = pre_test_set2
+                trainer.train()
+
+        trainer.load_model()
+        args.data_dir = "./few-shot"
+        trainer.train_dataset = train_dataset
+        trainer.dev_dataset = dev_dataset
+        trainer.test_dataset =test_dataset
+        trainer.train()
+
+        if args.do_eval:
+            trainer.load_model()
+            args.task = main_task
+            trainer.test_dataset = test_dataset
+            args.data_dir = "./few-shot"
+            trainer.evaluate("test")
+"""
