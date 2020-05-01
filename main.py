@@ -27,8 +27,9 @@ def main(args):
         # Back to original task and model dir
         args.model_dir = model_dir
         args.task = main_task
-        # data_dir for few-shot
-        args.data_dir = "./few-shot"
+        # If k flag is set, select data from the right folder
+        if args.K:
+            args.data_dir = "./few-shot"
         # Get main task data
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
@@ -45,7 +46,6 @@ def main(args):
         trainer.model = trainer.model_class(trainer.bert_config, args, get_intent_labels(args), get_slot_labels(args))
         trainer.model.num_intent_labels = len(get_intent_labels(args))
         trainer.model.num_slot_labels = len(get_slot_labels(args))
-        # trainer.model.bert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path, config=trainer.bert_config)
         trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
         trainer.model.slot_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
         trainer.model.to(trainer.device)
