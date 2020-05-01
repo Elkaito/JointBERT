@@ -96,6 +96,7 @@ def main(args):
         trainer.model.bert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path, config=trainer.bert_config)
         trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
         trainer.model.intent_classifier = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
+        trainer.model.to(trainer.device)
         trainer.train()
 
         if args.do_eval:
