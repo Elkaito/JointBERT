@@ -89,8 +89,8 @@ def main(args):
         trainer.dev_dataset = dev_dataset
         trainer.test_dataset = test_dataset
         # Change model output_layer
-        trainer.model.intent_classifier = IntentClassifier(trainer.bert_config.hidden_size, get_intent_labels(args), args.dropout_rate)
-        trainer.model.intent_classifier = SlotClassifier(trainer.bert_config.hidden_size, get_slot_labels(args), args.dropout_rate)
+        trainer.model.intent_classifier = IntentClassifier(trainer.bert_config.hidden_size, len(get_intent_labels(args)), args.dropout_rate)
+        trainer.model.intent_classifier = SlotClassifier(trainer.bert_config.hidden_size, len(get_slot_labels(args)), args.dropout_rate)
         trainer.train()
 
         if args.do_eval:
