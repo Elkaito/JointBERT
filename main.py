@@ -88,7 +88,9 @@ def main(args):
         trainer.train_dataset = train_dataset
         trainer.dev_dataset = dev_dataset
         trainer.test_dataset = test_dataset
-        # Change model output_layer
+        # Change model output_layer and labels
+        trainer.model.num_intent_labels = len(get_intent_labels(args))
+        trainer.model.num_slot_labels = len(get_slot_labels(args))
         trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
         trainer.model.intent_classifier = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
         trainer.train()
