@@ -90,6 +90,7 @@ def main(args):
         trainer.test_dataset = test_dataset
         # Change model output_layer and labels
         trainer.bert_config = trainer.config_class.from_pretrained(args.model_name_or_path, finetuning_task=args.task)
+        trainer.model = trainer.model_class(trainer.bert_config, args, get_intent_labels(args), get_slot_labels(args))
         trainer.model.num_intent_labels = len(get_intent_labels(args))
         trainer.model.num_slot_labels = len(get_slot_labels(args))
         trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
