@@ -5,8 +5,7 @@ from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASS
 from data_loader import load_and_cache_examples
 import time
 from datetime import timedelta
-from model import JointBERT, IntentClassifier, SlotClassifier
-
+from model import JointBERT, IntentClassifier, SlotClassifier, PRETRAINED_MODEL_MAP
 def main(args):
 
     init_logger()
@@ -94,6 +93,7 @@ def main(args):
         trainer.model = trainer.model_class(trainer.bert_config, args, get_intent_labels(args), get_slot_labels(args))
         trainer.model.num_intent_labels = len(get_intent_labels(args))
         trainer.model.num_slot_labels = len(get_slot_labels(args))
+        trainer.model.bert = PRETRAINED_MODEL_MAP[args.model_type].from_pretrained(args.model_name_or_path, config=trainer.bert_config)
         trainer.model.intent_classifier.linear = nn.Linear(trainer.bert_config.hidden_size, len(get_intent_labels(args)))
         trainer.model.intent_classifier = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
         trainer.train()
