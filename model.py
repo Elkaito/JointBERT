@@ -11,7 +11,7 @@ PRETRAINED_MODEL_MAP = {
 }
 
 
-class IntentClassifier(nn.ModuleList):
+class IntentClassifier(nn.Sequential):
     def __init__(self, input_dim, num_intent_labels, dropout_rate=0.):
         super(IntentClassifier, self).__init__()
         self.dropout = nn.Dropout(dropout_rate)
@@ -22,7 +22,7 @@ class IntentClassifier(nn.ModuleList):
         return self.linear(x)
 
 
-class SlotClassifier(nn.ModuleList):
+class SlotClassifier(nn.Sequential):
     def __init__(self, input_dim, num_slot_labels, dropout_rate=0.):
         super(SlotClassifier, self).__init__()
         self.dropout = nn.Dropout(dropout_rate)
