@@ -91,9 +91,11 @@ def main(args):
         trainer.train_dataset = train_dataset
         trainer.dev_dataset = dev_dataset
         trainer.test_dataset = test_dataset
-        # Change model output_layer and labels
+        # Change trainer config to main_task
         trainer.args = args
         trainer.bert_config = trainer.config_class.from_pretrained(args.model_name_or_path, finetuning_task=args.task)
+        trainer.intent_label_lst = get_intent_labels(args)
+        trainer.slot_label_lst = get_slot_labels(args)
         trainer.model = trainer.model_class(trainer.bert_config, args, get_intent_labels(args), get_slot_labels(args))
         trainer.model.num_intent_labels = len(get_intent_labels(args))
         trainer.model.num_slot_labels = len(get_slot_labels(args))
