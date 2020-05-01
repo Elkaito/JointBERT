@@ -84,6 +84,10 @@ def main(args):
         train_dataset = load_and_cache_examples(args, tokenizer, mode="train")
         dev_dataset = load_and_cache_examples(args, tokenizer, mode="dev")
         test_dataset = load_and_cache_examples(args, tokenizer, mode="test")
+
+        trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
+        trainer.train()
+        """
         trainer.train_dataset = train_dataset
         trainer.dev_dataset = dev_dataset
         trainer.test_dataset = test_dataset
@@ -98,6 +102,7 @@ def main(args):
         trainer.model.intent_classifier = nn.Linear(trainer.bert_config.hidden_size, len(get_slot_labels(args)))
         trainer.model.to(trainer.device)
         trainer.train()
+        """
 
         if args.do_eval:
             trainer.load_model()
