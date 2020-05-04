@@ -219,6 +219,7 @@ class Trainer(object):
         for key in sorted(results.keys()):
             logger.info("  %s = %s", key, str(results[key]))
 
+
         return results
 
     def save_model(self):

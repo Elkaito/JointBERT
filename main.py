@@ -9,7 +9,7 @@ from model import JointBERT, IntentClassifier, SlotClassifier, PRETRAINED_MODEL_
 
 def main(args):
 
-    init_logger()
+    init_logger(args)
     tokenizer = load_tokenizer(args)
 
     if args.pre_task:
@@ -79,7 +79,7 @@ def main(args):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    print("Total run time: " + str(timedelta(seconds=elapsed_time)))
+    ("Total run time: " + str(timedelta(seconds=elapsed_time)))
     print("Random seed value was: " + str(args.seed))
 
 if __name__ == '__main__':

@@ -34,8 +34,10 @@ def load_tokenizer(args):
     return MODEL_CLASSES[args.model_type][2].from_pretrained(args.model_name_or_path)
 
 
-def init_logger():
-    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+def init_logger(args):
+    logfile_name = "pre{}Eval{}S{}K{}.txt".format(args.pre_task, args.task, args.seed, args.K)
+    logging.basicConfig(filename=logfile_name,
+                        format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                         datefmt='%m/%d/%Y %H:%M:%S',
                         level=logging.INFO)
 
