@@ -219,6 +219,8 @@ class Trainer(object):
         for key in sorted(results.keys()):
             logger.info("  %s = %s", key, str(results[key]))
 
+        logger.info("Random seed value was: " + str(self.args.seed))
+
 
         return results
 
