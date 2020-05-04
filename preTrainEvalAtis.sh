@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 #SBATCH --job-name=atis
 #SBATCH --output=/ukp-storage-1/tanaka/JB-Kshot/seedAtis/preTrain.txt
@@ -43,8 +43,7 @@ do
                   --do_train --do_eval \
                   --pre_model_dir  \
                   --K $K \
-                  --seed $SEED \
-
+                  --seed $SEED
      done
   done
 done

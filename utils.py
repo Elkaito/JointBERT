@@ -35,7 +35,7 @@ def load_tokenizer(args):
 
 
 def init_logger(args):
-    logfile_name = "pre{}_Eval{}_S{}_K{}.txt".format(args.pre_task, args.task, args.seed, args.K)
+    logfile_name = "pre{}_Eval{}_K{}_S{}.txt".format(args.pre_task, args.task, args.K, args.seed)
     logging.basicConfig(filename=logfile_name,
                         format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                         datefmt='%m/%d/%Y %H:%M:%S',
