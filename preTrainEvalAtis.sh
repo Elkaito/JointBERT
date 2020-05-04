@@ -44,9 +44,7 @@ do
                   --pre_model_dir  \
                   --K $K \
                   --seed $SEED \
+
      done
   done
 done
-
-
-
