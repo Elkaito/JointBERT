@@ -80,7 +80,7 @@ def main(args):
     elapsed_time = end_time - start_time
 
     print("Total run time: " + str(timedelta(seconds=elapsed_time)))
-
+    print("Random seed value was: " + str(args.seed))
 
 if __name__ == '__main__':
 
