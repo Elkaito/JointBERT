@@ -74,7 +74,7 @@ class Trainer(object):
         self.model.zero_grad()
 
         train_iterator = trange(int(self.args.num_train_epochs), desc="Epoch")
-        set_seed(self.args)
+
 
         max_performance = 0.0
 

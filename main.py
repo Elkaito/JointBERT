@@ -1,7 +1,7 @@
 import argparse
 import torch.nn as nn
 from trainer import Trainer
-from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP, get_intent_labels, get_slot_labels
+from utils import init_logger, load_tokenizer, read_prediction_text, MODEL_CLASSES, MODEL_PATH_MAP, get_intent_labels, get_slot_labels, set_seed
 from data_loader import load_and_cache_examples
 import time
 from datetime import timedelta
@@ -142,4 +142,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     args.model_name_or_path = MODEL_PATH_MAP[args.model_type]
+    set_seed(args)
     main(args)
