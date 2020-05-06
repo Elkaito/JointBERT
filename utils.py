@@ -35,9 +35,7 @@ def load_tokenizer(args):
 
 
 def init_logger(args):
-    logfile_name = "pre{}_Eval{}_K{}_S{}.txt".format(args.pre_task, args.task, args.K, args.seed)
-    logging.basicConfig(filename=logfile_name,
-                        format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                         datefmt='%m/%d/%Y %H:%M:%S',
                         level=logging.INFO)
 
@@ -46,6 +44,9 @@ def set_seed(args):
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
+    torch.random.manual_seed(args.seed)
+    torch.backends.cudnn.deterministic = True
+
     if not args.no_cuda and torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.seed)
 
